@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch URL Data</title>
+    
+    <style>
+        .container2{
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Fetch Data from URL</h1>
+        <form id="fetch-form">
+            <label for="data-link">Enter URL:</label>
+            <input type="url" id="data-link" name="url" required>
+            <button type="submit">Fetch Data</button>
+        </form>
+        <h2>Fetched Data:</h2>
+        <div id="data-container" class="container2"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('fetch-form').addEventListener('submit', fetchData);
+        });
+
+        async function fetchData(event) {
+            event.preventDefault();
+            const url = document.getElementById('data-link').value;
+            const responseContainer = document.getElementById('data-container');
+            responseContainer.textContent = 'Fetching data...';
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                const data = await response.json();
+                responseContainer.textContent = JSON.stringify(data, null, 2); 
+            } catch (error) {
+                responseContainer.textContent = 'Failed to fetch data: ' + error.message;
+            }
+        }
+    </script>
+</body>
+
+</html>
